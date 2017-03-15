@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <!--html-->
+    <div class='wrapper'>
+        <button class='like-btn'>
+        <span class='like-text'>点赞</span>
+        <span>👍</span>
+      </button>
+    </div>
+
+    <!--js-->
+    <script>
+        const BTN = document.querySelector('.like-btn');
+        const BTNTEXT = document.querySelector('.like-text');
+        let btnType = true;
+        BTN.addEventListener('click',()=>{
+            if(btnType){
+                BTNTEXT.innerText = '取消';
+            }else{
+                BTNTEXT.innerText = '点赞';
+            }
+            btnType = !btnType;
+        },false);
+    </script>
+</body>
+
+</html>
