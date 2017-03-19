@@ -1,11 +1,10 @@
 import React from 'react';
-import ReactDom from 'react-dom';
 
 class ComponentHeader extends React.Component{
     render(){
         return (
             <header>
-                <h1>Hello header world</h1>
+                <p>这里是header,一般放置头部信息</p>
             </header>
         )
     }
