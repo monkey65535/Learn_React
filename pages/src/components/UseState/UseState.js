@@ -8,7 +8,8 @@ class UseStage extends React.Component{
         this.state = {
             userName:'lucky',
             isLike:false,
-            update:'这里是父页面会被更改的数据'
+            update:'这里是父页面会被更改的数据',
+            string:'11111'
         }
     }
     updateValue(event) {
@@ -25,7 +26,6 @@ class UseStage extends React.Component{
                 <p>{this.state.userName}</p>
                 <PropsButton props={this.isLike}/>
                 <PropsButton isLike={this.isLike}/>
-                <PropsButton isLike={{like:true,unlike:false}}/>
                 <p>{this.state.update}</p>
                 <Events updateValue={this.updateValue.bind(this)}/>
             </div>
