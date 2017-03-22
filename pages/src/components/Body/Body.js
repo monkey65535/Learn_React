@@ -1,4 +1,5 @@
 import React from 'react';
+import Styles from '../Styles/Styles';
 class IndexBody extends React.Component{
     render() {
         // 插入参数
@@ -8,6 +9,7 @@ class IndexBody extends React.Component{
         let htmlTemp = '<h1>this is a text</h1>';
         return (
             <div id="indexbody">
+                <Styles/>
                 <p>这里是index的body</p>
                 <p>{userName === "" ? "尚未登陆" : "用户名为 + " + userName }</p>
                 <p><input type="button" value={userName} disabled={btnType}/></p>
