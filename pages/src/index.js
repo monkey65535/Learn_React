@@ -11,7 +11,6 @@ class Index extends React.Component{
     return (
       <div id="app">
         <ComponentHeader/>
-        <IndexBody/>
         <Lift/>
         <UseState/>
         <ComponentFooter/>
