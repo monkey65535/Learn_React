@@ -22,17 +22,28 @@ class PcHeader extends React.Component {
         this.state = {
             current: 'top',
             modalVisable: false,
-            action: 'register',
+            action: 'login',
             hasLogined: false,
-            userNickName: ''
+            userNickName: '',
+            UserId:0
         };
+    }
+    componentWillMount() {
+        if(localStorage.UserId !=''){
+            this.setState({
+                hasLogined:true,
+                userNickName:localStorage.NickUserName,
+                UserId:localStorage.UserId
+            })
+        }
     }
     //设置模态框展示隐藏
     setModelVisible(value) {
         this.setState({
             modalVisable: value
         });
-    }
+    };
+
     handleClick(e) {
         console.log(e.key);
         if(e.key === "register"){
@@ -45,7 +56,7 @@ class PcHeader extends React.Component {
                 current:e.key
             })
         }
-    }
+    };
     //提交
     handleSubmit(ev) {
         ev.preventDefault();
@@ -61,13 +72,41 @@ class PcHeader extends React.Component {
         .then(json => {
             this.setState({
                 userNickName: json.NickUserName,
-                userId:json.userId
+                UserId:json.UserId
             });
+            localStorage.UserId = json.UserId;
+            localStorage.NickUserName = json.NickUserName;
         });
-        message.success('请求成功');
+        if(this.state.action === 'login'){
+            this.setState({
+                hasLogined:true
+            })
+        }
+        message.success('注册成功');
         this.setModelVisible(false);
-    }
+    };
 
+    //登出
+    logOut() {
+        localStorage.UserId = '';
+        localStorage.NickUserName = '';
+        this.setState({
+            hasLogined:false
+        });
+    };
+    //切换模态框
+    callback(key) {
+        if(key === '1'){
+            this.setState({
+                action:'login'
+            });
+        }else{
+            this.setState({
+                action:'register'
+            })
+        }
+    }
+    
     //render
     render() {
         let {getFieldDecorator} = this.props.form;
@@ -76,11 +115,9 @@ class PcHeader extends React.Component {
 			? <Menu.Item key="logout" class="register">
 					<Button type="primary" htmlType="button">{this.state.userNickName}</Button>
 					&nbsp;&nbsp;
-					<Link target="_blank" to={`/usercenter`}>
-						<Button type="dashed" htmlType="button">个人中心</Button>
-					</Link>
+                    <Button type="dashed" htmlType="button">个人中心</Button>                    
 					&nbsp;&nbsp;
-					<Button type="ghost" htmlType="button" >退出</Button>
+					<Button type="ghost" htmlType="button" onClick={this.logOut.bind(this)}>退出</Button>
 				</Menu.Item>
 			: <Menu.Item key="register" class="register">
 				<Icon type="user"/>注册/登录
@@ -99,28 +136,28 @@ class PcHeader extends React.Component {
                     <Col span={16}>
                         <Menu mode="horizontal" selectedKeys={[this.state.current]} onClick={this.handleClick.bind(this)}>
                             <Menu.Item key="top">
-                                <Icon type="appstore" />头条
+                                <Icon type="desktop" />头条
                             </Menu.Item>
                             <Menu.Item key="shehui">
-                                <Icon type="appstore" />社会
+                                <Icon type="layout" />社会
                             </Menu.Item>
                             <Menu.Item key="guonei">
-                                <Icon type="appstore" />国内
+                                <Icon type="api" />国内
                             </Menu.Item>
                             <Menu.Item key="guoji">
-                                <Icon type="appstore" />国际
+                                <Icon type="global" />国际
                             </Menu.Item>
                             <Menu.Item key="yule">
-                                <Icon type="appstore" />娱乐
+                                <Icon type="calculator" />娱乐
                             </Menu.Item>
                             <Menu.Item key="tiyu">
-                                <Icon type="appstore" />体育
+                                <Icon type="rocket" />体育
                             </Menu.Item>
                             <Menu.Item key="keji">
-                                <Icon type="appstore" />科技
+                                <Icon type="usb" />科技
                             </Menu.Item>
                             <Menu.Item key="shishang">
-                                <Icon type="appstore" />时尚
+                                <Icon type="skin" />时尚
                             </Menu.Item>
                             {userShow}
                         </Menu>
@@ -131,7 +168,18 @@ class PcHeader extends React.Component {
                         onCancel={() => this.setModelVisible(false)} 
                         onOk={() => this.setModelVisible(false)}
                         okText="关闭">
-                            <Tabs type="card">
+                            <Tabs type="card" onChange={this.callback.bind(this)}>
+                                <TabPane tab="登陆" key="1">
+                                        <Form layout="horizontal" onSubmit={this.handleSubmit.bind(this)}>
+                                            <FormItem label="账户">
+                                            {getFieldDecorator('userName', { rules: [{ required: true, message: '请输入您的账号', whitespace: true }],})(<Input /> )}
+                                            </FormItem>
+                                            <FormItem label="密码">
+                                                {getFieldDecorator('password', { rules: [{ required: true, message: '请输入您的密码', whitespace: true }],})(<Input type="password"/> )}
+                                            </FormItem>
+                                            <Button type="primary" htmlType="submit">登陆</Button>
+                                        </Form>
+                                    </TabPane>
                                 <TabPane tab="注册" key="2">
                                     <Form layout="horizontal" onSubmit={this.handleSubmit.bind(this)}>
                                         <FormItem label="账户">
@@ -146,6 +194,7 @@ class PcHeader extends React.Component {
                                         <Button type="primary" htmlType="submit">注册</Button>
                                     </Form>
                                 </TabPane>
+                                
                             </Tabs>
                         </Modal>
                     </Col>
