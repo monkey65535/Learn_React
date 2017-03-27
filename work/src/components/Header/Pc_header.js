@@ -5,6 +5,8 @@ import {Menu,Icon,Tabs,message,Form,Input,Button,CheckBox,Modal} from 'antd';
 // eslint-disable-next-line
 import {Router, Route, Link, browserHistory} from 'react-router';
 
+import logoPic from './imgs/logo.png';
+
 const FormItem = Form.Item;
 // eslint-disable-next-line
 const SubMenu = Menu.SubMenu;
@@ -29,7 +31,7 @@ class PcHeader extends React.Component {
         };
     }
     componentWillMount() {
-        if(localStorage.UserId !=''){
+        if(localStorage.UserId !==''){
             this.setState({
                 hasLogined:true,
                 userNickName:localStorage.NickUserName,
@@ -129,7 +131,7 @@ class PcHeader extends React.Component {
                     <Col span={2}></Col>
                     <Col span={4}>
                         <a href="/" className="logo">
-                            <img src="./imgs/logo.pngta" alt=""/>
+                            <img src={logoPic} alt="" width="45px" height="45px"/>
                             <span>React News</span>
                         </a>
                     </Col>
