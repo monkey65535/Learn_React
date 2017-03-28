@@ -40,7 +40,7 @@ class PCNewsImgBlock extends React.Component {
             imagesList = imgList.map((newsItem,index) => (
             <div key={index} className="image_block">
                 <div className="img-con">
-                    <img style={styleImg} src={newsItem.thumbnial_pic_s} alt=""/>
+                    <img style={styleImg} src={newsItem.thumbnail_pic_s} alt=""/>
                 </div>
                 <div className="custom-card">
                     <h3 style={styleH3}>{newsItem.title}</h3>
