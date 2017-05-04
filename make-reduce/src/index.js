@@ -32,6 +32,8 @@ function renderTtile(title) {
     titleDom.style.color = title.color;
 }
 
+
+
 function disPatch(action){
     switch (action.type){
         case 'UPDATE_TITLE_TEXT':
