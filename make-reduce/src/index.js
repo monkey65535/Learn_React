@@ -14,24 +14,33 @@ function createStore(state, stateChanger) {
 
 
 // 渲染状态
-function renderApp(appState) {
+function renderApp(newAppState, oldAppState = {}) {
+    //es6 函数默认参数 oldAppState = {}
+    // 当数据未发生变化的时候不进行渲染
+    if(newAppState === oldAppState) return; 
     console.log('render APP');
-    renderTtile(appState.title);
-    renderContent(appState.content);
+    renderTtile(newAppState.title);
+    renderContent(newAppState.content);
 }
 
-function renderTtile(title) {
+function renderTtile(newTtile,oldTitle = {}) {
+    // 当数据未发生变化的时候不进行渲染
+    if(newTtile === oldTitle) return; 
+
     console.log('render title');
     const titleDom = document.getElementById('title');
-    titleDom.innerHTML = title.text;
-    titleDom.style.color = title.color;
+    titleDom.innerHTML = newTtile.text;
+    titleDom.style.color = newTtile.color;
 }
 
-function renderContent(content) {
+function renderContent(newContent, oldContent = {}) {
+    // 当数据未发生变化的时候不进行渲染
+    if(newContent === oldContent) return; 
+
     console.log('render content');
     const titleDom = document.getElementById('content');
-    titleDom.innerHTML = content.text;
-    titleDom.style.color = content.color;
+    titleDom.innerHTML = newContent.text;
+    titleDom.style.color = newContent.color;
 }
 
 
@@ -62,7 +71,13 @@ function stateChanger(state, action) {
 
 
 const store = createStore(appState,stateChanger);
-store.subscribe(() => renderApp(store.getState()));
+// 创建一个变量来缓存旧的state
+let oldState = store.createStore();
+store.subscribe(() => {
+    const newState = store.getState();  //获取新的store
+    renderApp(newState, oldState);        //传入新旧数据进行渲染
+    oldState = newState;        //替换旧的store
+});
 renderApp(store.getState());
 
 store.disPatch({type: 'UPDATE_TITLE_TEXT', text: '《React.js 小书》'});// 修改标题文本
