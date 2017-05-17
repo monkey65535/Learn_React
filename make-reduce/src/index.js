@@ -18,13 +18,11 @@ function createStore(reducer) {
     }
 }
 
-
 // 渲染状态
 function renderApp(newAppState, oldAppState = {}) {
     //es6 函数默认参数 oldAppState = {}
     // 当数据未发生变化的时候不进行渲染
     if (newAppState === oldAppState) return;
-    console.log('render APP');
     renderTtile(newAppState.title);
     renderContent(newAppState.content);
 }
@@ -32,8 +30,6 @@ function renderApp(newAppState, oldAppState = {}) {
 function renderTtile(newTtile, oldTitle = {}) {
     // 当数据未发生变化的时候不进行渲染
     if (newTtile === oldTitle) return;
-
-    console.log('render title');
     const titleDom = document.getElementById('title');
     titleDom.innerHTML = newTtile.text;
     titleDom.style.color = newTtile.color;
@@ -42,8 +38,6 @@ function renderTtile(newTtile, oldTitle = {}) {
 function renderContent(newContent, oldContent = {}) {
     // 当数据未发生变化的时候不进行渲染
     if (newContent === oldContent) return;
-
-    console.log('render content');
     const titleDom = document.getElementById('content');
     titleDom.innerHTML = newContent.text;
     titleDom.style.color = newContent.color;
@@ -84,7 +78,6 @@ function stateChanger(state, action) {
             return state;
     }
 }
-
 
 const store = createStore(stateChanger)
 let oldState = store.getState() // 缓存旧的 state
