@@ -2,14 +2,18 @@
 
 // 创建一个状态管理中心的方法
 function createStore(state, stateChanger) {
-    const listeners = [];
-    const subscribe = (listener) => listeners.push(listener);
-    const getState = () => state;
-    const disPatch = (action) => {
-        stateChanger(state, action);
-        listeners.forEach((listener) => listener());
-    };
-    return {getState, disPatch,subscribe};
+    const listeners = []
+    const subscribe = (listener) => listeners.push(listener)
+    const getState = () => state
+    const dispatch = (action) => {
+        state = stateChanger(state, action) // 覆盖原对象
+        listeners.forEach((listener) => listener())
+    }
+    return {
+        getState,
+        dispatch,
+        subscribe
+    }
 }
 
 
@@ -17,15 +21,15 @@ function createStore(state, stateChanger) {
 function renderApp(newAppState, oldAppState = {}) {
     //es6 函数默认参数 oldAppState = {}
     // 当数据未发生变化的时候不进行渲染
-    if(newAppState === oldAppState) return; 
+    if (newAppState === oldAppState) return;
     console.log('render APP');
     renderTtile(newAppState.title);
     renderContent(newAppState.content);
 }
 
-function renderTtile(newTtile,oldTitle = {}) {
+function renderTtile(newTtile, oldTitle = {}) {
     // 当数据未发生变化的时候不进行渲染
-    if(newTtile === oldTitle) return; 
+    if (newTtile === oldTitle) return;
 
     console.log('render title');
     const titleDom = document.getElementById('title');
@@ -35,7 +39,7 @@ function renderTtile(newTtile,oldTitle = {}) {
 
 function renderContent(newContent, oldContent = {}) {
     // 当数据未发生变化的时候不进行渲染
-    if(newContent === oldContent) return; 
+    if (newContent === oldContent) return;
 
     console.log('render content');
     const titleDom = document.getElementById('content');
@@ -59,26 +63,35 @@ let appState = {
 function stateChanger(state, action) {
     switch (action.type) {
         case 'UPDATE_TITLE_TEXT':
-            state.title.text = action.text;
-            break;
+            return {
+                ...state,
+                title: {
+                    ...state.title,
+                    text: action.text
+                }
+            }
         case 'UPDATE_TITLE_COLOR':
-            state.title.color = action.color;
-            break;
+            return {
+                ...state,
+                title: {
+                    ...state.title,
+                    color: action.color
+                }
+            }
         default:
-            break;
+            return state;
     }
 }
 
 
-const store = createStore(appState,stateChanger);
-// 创建一个变量来缓存旧的state
-let oldState = store.createStore();
+const store = createStore(appState, stateChanger)
+let oldState = store.getState() // 缓存旧的 state
 store.subscribe(() => {
-    const newState = store.getState();  //获取新的store
-    renderApp(newState, oldState);        //传入新旧数据进行渲染
-    oldState = newState;        //替换旧的store
-});
+    const newState = store.getState() // 数据可能变化，获取新的 state
+    renderApp(newState, oldState) // 把新旧的 state 传进去渲染
+    oldState = newState // 渲染完以后，新的 newState 变成了旧的 oldState，等待下一次数据变化重新渲染
+})
 renderApp(store.getState());
 
-store.disPatch({type: 'UPDATE_TITLE_TEXT', text: '《React.js 小书》'});// 修改标题文本
-store.disPatch({type: 'UPDATE_TITLE_COLOR', color: 'blue'});// 修改标题颜色
+store.dispatch({ type: 'UPDATE_TITLE_TEXT', text: '《React.js 小书》' }) // 修改标题文本
+store.dispatch({ type: 'UPDATE_TITLE_COLOR', color: 'blue' }) // 修改标题颜色
