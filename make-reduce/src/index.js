@@ -1,14 +1,16 @@
 // 函数式编程思想
 
 // 创建一个状态管理中心的方法
-function createStore(state, stateChanger) {
+function createStore(reducer) {
+    let state = null;
     const listeners = []
     const subscribe = (listener) => listeners.push(listener)
     const getState = () => state
     const dispatch = (action) => {
-        state = stateChanger(state, action) // 覆盖原对象
+        state = reducer(state, action) // 覆盖原对象
         listeners.forEach((listener) => listener())
     }
+    dispatch({}); //初始化state
     return {
         getState,
         dispatch,
@@ -47,20 +49,20 @@ function renderContent(newContent, oldContent = {}) {
     titleDom.style.color = newContent.color;
 }
 
-
-let appState = {
-    title: {
-        text: 'reactBook',
-        color: 'red'
-    },
-    content: {
-        text: 'reactBookContent',
-        color: 'blue'
-    }
-};
-
 // 修改状态需要通过change方法来进行修改
 function stateChanger(state, action) {
+    if (!state) {
+        return {
+            title: {
+                text: 'React.js小书',
+                color: 'red'
+            },
+            content: {
+                text: 'React.js小书的内容',
+                color: 'blue'
+            }
+        }
+    }
     switch (action.type) {
         case 'UPDATE_TITLE_TEXT':
             return {
@@ -84,7 +86,7 @@ function stateChanger(state, action) {
 }
 
 
-const store = createStore(appState, stateChanger)
+const store = createStore(stateChanger)
 let oldState = store.getState() // 缓存旧的 state
 store.subscribe(() => {
     const newState = store.getState() // 数据可能变化，获取新的 state
@@ -93,5 +95,11 @@ store.subscribe(() => {
 })
 renderApp(store.getState());
 
-store.dispatch({ type: 'UPDATE_TITLE_TEXT', text: '《React.js 小书》' }) // 修改标题文本
-store.dispatch({ type: 'UPDATE_TITLE_COLOR', color: 'blue' }) // 修改标题颜色
+store.dispatch({
+    type: 'UPDATE_TITLE_TEXT',
+    text: '《React.js 小书》'
+}) // 修改标题文本
+store.dispatch({
+    type: 'UPDATE_TITLE_COLOR',
+    color: 'blue'
+}) // 修改标题颜色
