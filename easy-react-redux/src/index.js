@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import Header from './components/Header';
-import Content from './components/Content';
+import React, {Component} from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types';
+import Header from './conponents/Header'
+import Content from './conponents/Content'
 
+// 构建一个store
 function createStore(reducer) {
   let state = null;
   const listeners = [];
@@ -14,30 +14,33 @@ function createStore(reducer) {
     state = reducer(state, action);
     listeners.forEach((listener) => listener());
   }
+  // 初始化state
   dispatch({});
   return {getState, dispatch, subscribe};
 }
 
+// 构建reducer
 const themeReducer = (state, action) => {
   if (!state) {
-    return {themeColor: 'red'};
+    return {themeColor: 'red'}
   }
 
   switch (action.type) {
+      // 当传入修改的type的时候，进行一次浅拷贝，并return拷贝完成之后的数据
     case 'CHANGE_COLOR':
       return {
         ...state,
         themeColor: action.themeColor
-      }
+      };
     default:
       return state;
   }
 }
+// 构建store
 const store = createStore(themeReducer);
 
-// 将我们创建的store放入index组件
-class Index extends React.Component {
-  // 定义ConText
+class Index extends Component {
+  // 将我们建立的store放到Index组件的context中，这样他的所有子组件都可以获取的到这个state了
   static childContextTypes = {
     store: PropTypes.object
   }
@@ -47,12 +50,12 @@ class Index extends React.Component {
   render() {
     return (
       <div>
-        <Header></Header>
-        <Content></Content>
+        <Header/>
+        <Content/>
       </div>
     )
   }
 }
 
 ReactDOM.render(
-  <Index/>, document.getElementById('root'));
+  <Index/>, document.getElementById('root'))
