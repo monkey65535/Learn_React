@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 
-// 引入我们实现的木偶组件
-import { connect } from '../react-redux';
+import { connect } from 'react-redux'
 
 // 修改Header组件，使其可以从父组件中获取store
 class Header extends Component {

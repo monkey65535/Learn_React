@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ThemeSwitch from './ThemeSwitch'
 
 // 引入我们实现的木偶组件
-import { connect } from '../react-redux';
+import { connect } from 'react-redux'
 
 class Content extends Component {
   static contextTypes = {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 // eslint-disable-next-line
 import PropTypes from 'prop-types';
-import {Connect} from './connect';
+import { connect } from 'react-redux'
 
 class ThemeSwitch extends Component {
 
@@ -72,6 +72,6 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-ThemeSwitch = Connect(mapStateToProps,mapDispatchToProps)(ThemeSwitch);
+ThemeSwitch = connect(mapStateToProps,mapDispatchToProps)(ThemeSwitch);
 
 export default ThemeSwitch;
