@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Header from './conponents/Header'
 import Content from './conponents/Content'
 
+import { Provider } from './react-redux';
+
 // 构建一个store
 function createStore(reducer) {
   let state = null;
@@ -40,13 +42,6 @@ const themeReducer = (state, action) => {
 const store = createStore(themeReducer);
 
 class Index extends Component {
-  // 将我们建立的store放到Index组件的context中，这样他的所有子组件都可以获取的到这个state了
-  static childContextTypes = {
-    store: PropTypes.object
-  }
-  getChildContext() {
-    return {store}
-  }
   render() {
     return (
       <div>
@@ -58,4 +53,6 @@ class Index extends Component {
 }
 
 ReactDOM.render(
-  <Index/>, document.getElementById('root'))
+  <Provider store={store}>
+    <Index />
+  </Provider>, document.getElementById('root'))
