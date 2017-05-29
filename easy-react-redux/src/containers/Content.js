@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 // eslint-disable-next-line
 import PropTypes from 'prop-types';
-import ThemeSwitch from './ThemeSwitch'
+import ThemeSwitch from './ThemeSwitch';
 
 // 引入我们实现的木偶组件
 import { connect } from 'react-redux'

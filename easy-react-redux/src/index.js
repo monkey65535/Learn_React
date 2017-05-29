@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
-import Header from './conponents/Header'
-import Content from './conponents/Content'
+import Header from './containers/Header';
+import Content from './containers/Content';
 
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
+import {createStore} from 'redux'
+import {Provider} from 'react-redux'
 
 // 构建reducer
 const themeReducer = (state, action) => {
