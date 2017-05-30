@@ -1,5 +1,5 @@
 import React from 'react';
-import Comment from '../Comment/Comment';
+import Comment from './Comment';
 class CommentList extends React.Component{
     static defaultProps = {
         listItem:[]
