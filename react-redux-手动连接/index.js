@@ -1,21 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import {createStore} from 'redux';
 import Counter from './components/Counter';
-import counterReducer from './reducers/Counter';
+import counter from './reducers/Counter';
 
-const store = createStore(counterReducer);
+const store = createStore(counter, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 const rootEl = document.getElementById('root');
 
 function render() {
   ReactDOM.render(
     <Counter
-      value={store.getState()}
-      onIncrement={() => store.dispatch({ type: 'INCREMENT' })}
-      onDecrement={() => store.dispatch({ type: 'DECREMENT' })}
-    />,
-    rootEl
-  );
+    value={store.getState()}
+    onIncrement={() => store.dispatch({type: 'INCREMENT'})}
+    onDecrement={() => store.dispatch({type: 'DECREMENT'})}/>, rootEl);
 }
 
 render();
