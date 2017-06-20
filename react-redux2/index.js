@@ -65,7 +65,7 @@ function mapStateToProps(state) {
   return {value: state.count}
 }
 
-mapDispatchToProps
+// mapDispatchToProps
 function mapDispatchToProps(dispatch) {
   return {
     addOnes: () => {
