@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Nav from 'nav/Nav.js';
 import CardWrap from 'cardWrap/CardWrap.js';
 import Home from 'home/Home.js';
+import List from './components/List/List.js';
 
 require('../semantic/dist/semantic.css');
 require('./common/style/main.css');
@@ -69,27 +70,14 @@ class App extends Component{
     render(){
         console.log('app');
         let {view} = this.state;
-
         let {data} = this.props;
-
-        let viewComp = null;
-
-        switch (view) {
-
-            case 'list':
-                viewComp = <CardWrap data={data}/>
-                break;
-            case 'home':
-                viewComp = <Home/>
-            default:
-
-        }
-
         return (
             <div className="ui container">
                 <div className="ui dividing"></div>
                 <Nav changeView={this.changeView}/>
-                {viewComp}
+                <List/>
+                <Home/>
+                <CardWrap data={data}/>
             </div>
         );
     }
