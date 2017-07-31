@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Nav from 'nav/Nav.js';
 import CardWrap from 'cardWrap/CardWrap.js';
 import Home from 'home/Home.js';
+import ListContainer from 'ListContainer/ListContainer.js';
 
 require('../semantic/dist/semantic.css');
 require('./common/style/main.css');
@@ -41,7 +42,7 @@ class App extends Component{
     constructor(props){
         super(props);
         this.state = {
-            view: 'home'
+            view: 'listContainer'
         }
         this.changeView = this.changeView.bind(this);
     }
@@ -57,17 +58,7 @@ class App extends Component{
             et: 'Died'
         }
     }
-
-    componentDidUpdate(){
-        console.log('App 更新好了');
-    }
-
-    componentDidMount(){
-        console.log('APP 渲染完成');
-    }
-
     render(){
-        console.log('app');
         let {view} = this.state;
 
         let {data} = this.props;
@@ -81,6 +72,9 @@ class App extends Component{
                 break;
             case 'home':
                 viewComp = <Home/>
+                break;
+            case 'listContainer':
+                viewComp = <ListContainer/>
             default:
 
         }

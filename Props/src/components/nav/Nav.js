@@ -11,11 +11,15 @@ export default class Nav extends Component{
                 <div
                     className="item"
                     onClick = {()=>{changeView('home')}}
-                >Home</div>
+                >首页</div>
                 <div
                     className="item"
                     onClick={()=>{changeView('list')}}
-                >List</div>
+                >列表</div>
+                <div
+                    className="item"
+                    onClick={()=>{changeView('listContainer')}}
+                >菜单</div>
                 <div className="item right">Login</div>
             </div>
         )
