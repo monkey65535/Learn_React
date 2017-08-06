@@ -2,22 +2,29 @@ import React, { Component } from 'react';
 import {PropTypes } from 'prop-types';
 let porpTypes = {
     todo:PropTypes.object,
-    onDestory:PropTypes.func
+    onDestory:PropTypes.func,
+    onToggle:PropTypes.func
 }
 class Item extends Component {
     constructor(props){
         super(props);
+
     }
     deleteHandle(todo){
         const {onDestory} = this.props;
         onDestory(todo);
+    }
+    toggleCheck(todo,ev){
+        const {onToggle} = this.props;
+        const {checked} = ev.target;
+        onToggle(checked,todo);
     }
     render() {
         const {todo} = this.props;
         return (
             <li>
                 <div className="view">
-                    <input type="checkbox" className="toggle"/>
+                    <input type="checkbox" className="toggle" checked={todo.hasCompleted} onChange={this.toggleCheck.bind(this,todo)}/>
                     <label>
                         {todo.value}
                     </label>
