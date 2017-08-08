@@ -1,15 +1,20 @@
-import {BrowserRouter, Route} from 'react-router-dom';
-import Frame from './layout/Frame/Frame';
+import {
+    BrowserRouter as Router,
+    Route
+} from 'react-router-dom';
+
+import Frame from 'frame/Frame';
+
 require('semantic/dist/semantic.min.css');
-require('semantic/dist/semantic.js');
+require('semantic/dist/semantic.min.js');
 
 ReactDOM.render(
-    <BrowserRouter>
+    <Router>
         <Route path="/" component={Frame}/>
-    </BrowserRouter>, document.getElementById('root'));
+    </Router>,
+    document.getElementById('root')
+);
 
 if (module.hot) {
-    module
-        .hot
-        .accept();
+    module.hot.accept();
 }

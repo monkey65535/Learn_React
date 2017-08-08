@@ -1,21 +1,49 @@
-/*
- *  PreviewList 无状态组件，接受一个数组，返回对应的preview列表
- *  params:LIST
- */
-import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import Preview from './Preview';
 import S from './style.scss';
-import Preview from './Preview.js';
-class PreviewList extends Component {
-    render() {
-        let {previews} = this.props;
-        let PreList = previews.map((elt)=>(<Preview {...elt} key={elt.id}></Preview>))
-        return (
-            <div>
-                {PreList}
-            </div>
-        );
-    }
-}
 
-export default PreviewList;
+
+export default function PreviewList(props){
+
+    let {previews} = props;
+
+
+    previews = previews.map((elt, i)=>{
+        let {
+            id: article_id, article_title, createdAt,
+            preview: previewContent,
+            collection_name,
+            user_id,
+            collection_id,
+            user
+        } = elt;
+
+        let {avatar, user_name, user_intro} = user;
+        
+        return (
+            <Preview
+                {...{
+                    article_id,
+                    article_title,
+                    previewContent,
+                    user_id,
+                    user_name,
+                    createdAt,
+                    avatar,
+                    user_intro
+                }}
+                key={i}
+            >
+                <Link to=""
+                    className={S.tag}
+                >{collection_name}</Link>
+            </Preview>
+        );
+    });
+
+    return (
+        <div>
+            {previews}
+        </div>
+    );
+}

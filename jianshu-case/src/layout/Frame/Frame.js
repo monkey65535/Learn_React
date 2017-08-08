@@ -1,25 +1,19 @@
-import React, { Component } from 'react';
 import {Route} from 'react-router-dom';
-import Nav from '../Nav/Nav.js';
-import Home from '../../view/Home/Home';
-import style from './style.scss';
-/*
- * components:
- * nav:顶部导航
- * Home： 首页 
- */
-class Layout extends Component {
+import Nav from 'nav/Nav';
+import Home from 'view/home/Home.js';
+import S from './style.scss';
+
+export default class Layout extends React.Component{
     constructor(props){
         super(props);
     }
-    render() {
+
+    render(){
         return (
-            <div>
+            <div className={S.layout}>
                 <Nav/>
-                <Route path="/" exact component={Home}></Route>
+                <Route exact path="/" component={Home}/>
             </div>
         );
     }
 }
-
-export default Layout;
