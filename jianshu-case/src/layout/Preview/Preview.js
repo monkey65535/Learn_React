@@ -1,7 +1,7 @@
 
 import {Link} from 'react-router-dom';
 import S from './style.scss';
-
+import config from '../../common/config/config.json';
 export default function Preview(props){
 
     let {
@@ -25,7 +25,7 @@ export default function Preview(props){
                     <Link to="/"
                         className="avatar"
                     >
-                        <img src={avatar} alt="" className="ui avatar image"/>
+                        <img src={`${config.url}${avatar}`} alt="" className="ui avatar image"/>
                     </Link>
                     <div className={`${S.name}`}>
                         <Link to="/">{user_name}</Link>
