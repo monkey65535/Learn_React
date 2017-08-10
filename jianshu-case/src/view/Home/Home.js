@@ -12,15 +12,15 @@ export default class Home extends React.Component {
     componentDidMount() {
         //获取数据
         $.post(`${config.url}/getPreview`, (re) => {
-            console.log(re);
             if (re.code === 0) {
                 const {data} = re;
                 this.setState({previews: data});
             }
         });
         $.post(`${config.url}/getAuthor`, (re) => {
-            console.log(re);
             if (re.code === 0) {
+                
+            }else{
                 const {data} = re;
                 this.setState({authors: data});
             }
