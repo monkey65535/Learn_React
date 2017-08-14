@@ -1,20 +1,37 @@
-import React, { Component } from 'react';
-import EntryPanel from '../../components/user/Panel';
-import SignUpPanel from '../../components/user/SignUpPanel';
+
+import SignUpPanel from 'components/user/SignUpPanel';
+import EntryPanel from 'components/user/Panel';
+
 let propTypes = {
-    signUpAjax:PT.func,
-    signUpMsg:PT.object,
-    clearRegisterInfo:PT.func
-}
-class SignUp extends Component {
-    render() {
-        let {signUpAjax,signUpMsg,clearRegisterInfo} = this.props;
+    signUpAjax: PT.func,
+    signUpMsg: PT.object,
+    clearLoginMsg: PT.func
+};
+
+export default class SignUp extends React.Component{
+    constructor(props){
+        super(props);
+    }
+
+    componentWillUnmount(){
+        this.props.clearLoginMsg();
+    }
+
+    render(){
+
+        let {signUpAjax, signUpMsg} = this.props;
+
         return (
-            <EntryPanel>
-                <SignUpPanel {...{signUpAjax,signUpMsg,clearRegisterInfo}}/>
+            <EntryPanel >
+                <SignUpPanel
+                    {...{
+                        signUpAjax,
+                        signUpMsg
+                    }}
+                />
             </EntryPanel>
         );
     }
 }
+
 SignUp.propTypes = propTypes;
-export default SignUp;

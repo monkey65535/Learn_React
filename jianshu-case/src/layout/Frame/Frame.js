@@ -1,120 +1,191 @@
-import {Route,Redirect} from 'react-router-dom';
+import {Route, Redirect} from 'react-router-dom';
 import Nav from 'nav/Nav';
 import Home from 'view/home/Home.js';
-import SignIn from 'view/user/SignIn.js';
-import SignUp from 'view/user/SignUp.js';
+import SignUp from 'view/user/SignUp';
+import SignIn from 'view/user/SignIn';
+import MyPage from 'view/user/MyPage';
+
+import cfg from 'config/config.json';
+
 import S from './style.scss';
 
-import Config from 'config/config.json';
-
-export default class Layout extends React.Component{
-    constructor(props){
+export default class Frame extends React.Component {
+    constructor(props) {
         super(props);
-        //定义用户信息
         this.state = {
-            myInfo:null,
-            signInMsg:null,
-            signUpMsg:null,
-            hasLoginReq:false
+            myInfo: null,
+            signInMsg: null,
+            signUpMsg: null,
+            hasLoginReq: false,
+            myPagePreviews: [],
+            notebooks: [],
+            previewsName: '所有文章'
         };
-        //绑定Event
-        this.signInAjax = this.signInAjax.bind(this);
-        this.signUpAjax = this.signUpAjax.bind(this);
-        this.clearLoginInfo = this.clearLoginInfo.bind(this);
-        this.clearRegisterInfo = this.clearRegisterInfo.bind(this);
-        this.initMyInfo = this.initMyInfo.bind(this);
-        this.loginOut = this.loginOut.bind(this);
+
+        this.signInAjax = this
+            .signInAjax
+            .bind(this);
+        this.signUpAjax = this
+            .signUpAjax
+            .bind(this);
+        this.clearLoginMsg = this
+            .clearLoginMsg
+            .bind(this);
+        this.initMyInfo = this
+            .initMyInfo
+            .bind(this);
+        this.logOut = this
+            .logOut
+            .bind(this);
+        this.getPreview = this
+            .getPreview
+            .bind(this);
+        this.initMyPage = this
+            .initMyPage
+            .bind(this);
+        this.changePreviewsName = this
+            .changePreviewsName
+            .bind(this);
     }
-    initMyInfo(myInfo){
-        if(myInfo){
-            myInfo.avatar = Config.url + myInfo.avatar;
+
+    initMyInfo(myInfo) {
+        if (myInfo) {
+            myInfo.avatar = cfg.url + myInfo.avatar;
         }
+
         this.setState({myInfo});
     }
-    /*
-     * 用户登录
-     * params
-     * @ reqData 发送的数据，接受一个对象
-     * @ reqData.username
-     * @ reqData.passw
-     */
-    signInAjax(reqData){
-        $.post(`${Config.url}/login`,reqData,(re)=>{
-            if(re.code === 0){
-                this.initMyInfo(re.data);
-            }else{
-                this.setState({signInMsg:re});
-            }
-           
-        });
-    }
-    /*
-     * 用户注册
-     * params
-     * @ reqData 发送的数据，接受一个对象
-     * @ reqData.username
-     * @ reqData.passw
-     */
-    signUpAjax(reqData){
-        $.post(`${Config.url}/register`,reqData,(re)=>{
-            this.setState({signUpMsg:re});
-            if(re.code === 0){
-                setTimeout(()=>{
-                    this.initMyInfo(re.data);
-                },1000)
-            }
-        });
+
+    clearLoginMsg() {
+        this.setState({signInMsg: null, signUpMsg: null});
     }
 
-    /*
-     * 用户注销 
-     */
-    loginOut(ev){
-        ev.stopPropagation();
-        ev.preventDefault();
-        $.post(`${Config.url}/logout`,({code})=>{
-            if(code === 0){
-                this.initMyInfo(null);
-            }
-        })
+    signInAjax(reqData) {
+        $
+            .post(`${cfg.url}/login`, reqData)
+            .done(ret => {
+
+                let {code, data} = ret;
+
+                if (code === 0) {
+                    this.initMyInfo(ret.data);
+                } else {
+                    this.setState({signInMsg: ret});
+                }
+
+            });
     }
-     
-    // 清除登录信息
-    clearLoginInfo(){
-        this.setState({
-            signInMsg:null,
-            signUpMsg:null
-        })
+
+    signUpAjax(reqData) {
+        $
+            .post(`${cfg.url}/register`, reqData)
+            .done((ret) => {
+                let {code, data} = ret;
+
+                this.setState({signUpMsg: ret});
+
+                if (code === 0) {
+                    setTimeout(() => {
+                        this.initMyInfo(ret.data);
+                    });
+                }
+
+            });
     }
-    // 清除注册
-    clearRegisterInfo(){
-        this.clearLoginInfo();
+
+    logOut() {
+        $
+            .post(`${cfg.url}/logout`)
+            .done(({code}) => {
+                if (code === 0) {
+                    this.initMyInfo(null);
+                }
+            });
     }
-    componentDidMount(){
-        $.post(`${Config.url}/autologin`,(re)=>{
-            if(re && re.code === 0){
-                this.initMyInfo(re.data);
-            }
-            this.setState({hasLoginReq:true});
-        });
+
+    getPreview(data) {
+        $
+            .post(`${cfg.url}/getPreview`, data)
+            .done(({code, data}) => {
+                if (code === 0) {
+                    this.setState({myPagePreviews: data});
+                }
+            });
     }
-    render(){
-        let {signInAjax,signUpAjax,clearLoginInfo,clearRegisterInfo} = this;
-        let {signInMsg,signUpMsg,myInfo,hasLoginReq} = this.state;
-        if(!hasLoginReq){
-            return(<div></div>)
+
+    // previewName 就是用户页头像下显示的那几个字
+    initMyPage(user_id, previewsData, previewName) {
+        this.getPreview(previewsData);
+
+        $
+            .post(`${cfg.url}/getCollection`, {user_id})
+            .done(({code, data}) => {
+                if (code === 0) {
+                    this.setState({notebooks: data, previewName});
+                }
+            });
+
+    }
+
+    changePreviewsName(previewsName) {
+        this.setState({previewsName});
+    }
+
+    componentDidMount() {
+        $
+            .post(`${cfg.url}/autologin`)
+            .done(({code, data}) => {
+                if (code === 0) {
+                    this.initMyInfo(data);
+                }
+                this.setState({hasLoginReq: true});
+            });
+    }
+
+    render() {
+
+        let {signInAjax, signUpAjax, clearLoginMsg, logOut, initMyPage} = this;
+
+        let {
+            myInfo,
+            signInMsg,
+            signUpMsg,
+            hasLoginReq,
+            myPagePreviews,
+            notebooks,
+            previewsName
+        } = this.state;
+
+        if (!hasLoginReq) {
+            return (
+                <div></div>
+            );
         }
+
         return (
             <div className={S.layout}>
-                <Nav myInfo={this.state.myInfo} loginOut={this.loginOut}/>
-                <Route exact path="/" component={Home}/>
-                {/*在路由中进行props传递，那么就必须要使用render方法来渲染组件,在子组件接受数据*/}
-                <Route exact path="/sign_in" render={(props) => (
-                    myInfo ? (<Redirect to="/"/>) : (<SignIn {...{signInAjax,signInMsg,clearLoginInfo}}/>) 
-                )}/>
-                <Route exact path="/sign_up" render={(props) => (
-                    myInfo ? (<Redirect to="/"/>) : (<SignUp {...{signUpAjax,signUpMsg,clearRegisterInfo}}/>) 
-                )}/>
+                <Nav {...{ myInfo, logOut }}/>
+                <Route
+                    exact
+                    path="/"
+                    render={(props) => (<Home {...{ initMyPage }} {...props}/>)}/>
+
+                <Route
+                    exact
+                    path="/sign_in"
+                    render={(props) => (myInfo
+                    ? (<Redirect to="/"/>)
+                    : (<SignIn {...{ signInAjax, signInMsg, clearLoginMsg }}/>))}/>
+                <Route
+                    exact
+                    path="/sign_up"
+                    render={(props) => (myInfo
+                    ? (<Redirect to="/"/>)
+                    : (<SignUp {...{ signUpAjax, signUpMsg, clearLoginMsg }}/>))}/>
+                <Route
+                    exact
+                    path="/my_page"
+                    render={(props) => (<MyPage {...{ myPagePreviews, previewsName, notebooks }} {...props}/>)}/>
             </div>
         );
     }

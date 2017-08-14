@@ -1,11 +1,17 @@
 import {Link} from 'react-router-dom';
-import config from '../../common/config/config.json';
-export default function Author({user}) {
+
+import cfg from 'config/config.json';
+
+export default function Author({user}){
     let {user_name, avatar} = user;
+    avatar = cfg.url + avatar;
     return (
         <div className="item">
-            <Link to="/" className="ui mini avatar image">
-                <img src={`${config.url}${avatar}`} alt=""/>
+            <Link
+                to="/"
+                className="ui mini avatar image"
+            >
+                <img src={avatar} alt=""/>
             </Link>
             <div className="content">
                 <div className="header">
