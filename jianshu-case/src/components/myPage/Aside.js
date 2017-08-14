@@ -1,4 +1,3 @@
-
 import S from './style.scss';
 
 let propTypes = {
@@ -6,25 +5,22 @@ let propTypes = {
     userInfo: PT.object
 };
 
-export default class Aside extends React.Component{
-    constructor(props){
+export default class Aside extends React.Component {
+    constructor(props) {
         super(props);
     }
 
-    render(){
+    render() {
 
         let {notebooks, userInfo} = this.props;
 
         // console.log(notebooks);
 
-        notebooks = notebooks.map((elt, i)=>{
+        notebooks = notebooks.map((elt, i) => {
             let {id: collection_id, collection_name} = elt;
 
             return (
-                <div
-                    className="item"
-                    key={i}
-                >
+                <div className="item" key={i}>
                     <i className="book icon"></i>
                     <div className="content">
                         {collection_name}

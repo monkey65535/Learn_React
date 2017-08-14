@@ -1,4 +1,3 @@
-
 import SignUpPanel from 'components/user/SignUpPanel';
 import EntryPanel from 'components/user/Panel';
 
@@ -8,27 +7,24 @@ let propTypes = {
     clearLoginMsg: PT.func
 };
 
-export default class SignUp extends React.Component{
-    constructor(props){
+export default class SignUp extends React.Component {
+    constructor(props) {
         super(props);
     }
 
-    componentWillUnmount(){
-        this.props.clearLoginMsg();
+    componentWillUnmount() {
+        this
+            .props
+            .clearLoginMsg();
     }
 
-    render(){
+    render() {
 
         let {signUpAjax, signUpMsg} = this.props;
 
         return (
             <EntryPanel >
-                <SignUpPanel
-                    {...{
-                        signUpAjax,
-                        signUpMsg
-                    }}
-                />
+                <SignUpPanel {...{ signUpAjax, signUpMsg }}/>
             </EntryPanel>
         );
     }
