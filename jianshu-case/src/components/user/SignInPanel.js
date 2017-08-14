@@ -4,7 +4,8 @@ import Validation from '../../common/util/validation.js';
 
 let propTypes = {
     signInAjax:PT.func,
-    signInMsg:PT.object
+    signInMsg:PT.object,
+    clearLoginInfo:PT.func
 }
 
 class SignInPanel extends Component {
@@ -68,6 +69,9 @@ class SignInPanel extends Component {
                 passw:passwDom.value
             })
         }
+    }
+    componentWillUnmount(){
+        this.props.clearLoginInfo();
     }
     render() {
         let {username,password,nameErr,pwdErr} = this.state;

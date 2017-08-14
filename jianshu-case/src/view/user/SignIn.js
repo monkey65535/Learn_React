@@ -9,14 +9,15 @@ import SignInPanel from '../../components/user/SignInPanel';
 
 let propTypes = {
     signInAjax: PT.func,
-    signInMsg:PT.object
+    signInMsg:PT.object,
+    clearLoginInfo:PT.func
 }
 class SignIn extends Component {
     render() {
-        let { signInAjax,signInMsg } = this.props;
+        let { signInAjax,signInMsg,clearLoginInfo } = this.props;
         return (
             <EntryPanel>
-                <SignInPanel {...{signInAjax,signInMsg}}/>
+                <SignInPanel {...{signInAjax,signInMsg,clearLoginInfo}}/>
             </EntryPanel>
         );
     }

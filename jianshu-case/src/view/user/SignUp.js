@@ -3,14 +3,15 @@ import EntryPanel from '../../components/user/Panel';
 import SignUpPanel from '../../components/user/SignUpPanel';
 let propTypes = {
     signUpAjax:PT.func,
-    signUpMsg:PT.object
+    signUpMsg:PT.object,
+    clearRegisterInfo:PT.func
 }
 class SignUp extends Component {
     render() {
-        let {signUpAjax,signUpMsg} = this.props;
+        let {signUpAjax,signUpMsg,clearRegisterInfo} = this.props;
         return (
             <EntryPanel>
-                <SignUpPanel {...{signUpAjax,signUpMsg}}/>
+                <SignUpPanel {...{signUpAjax,signUpMsg,clearRegisterInfo}}/>
             </EntryPanel>
         );
     }

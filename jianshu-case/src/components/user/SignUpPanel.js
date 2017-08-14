@@ -3,7 +3,8 @@ import S from './style.scss';
 import Validation from '../../common/util/validation.js';
 let propTypes = {
     signUpAjax:PT.func,
-    signUpMsg:PT.object
+    signUpMsg:PT.object,
+    clearRegisterInfo:PT.func
 }
 class SignUpPanel extends Component {
     constructor(props){
@@ -74,6 +75,9 @@ class SignUpPanel extends Component {
                 cfPassw:repeatPwd
             })
         }
+    }
+    componentWillUnmount(){
+        this.props.clearRegisterInfo();
     }
     render() {
         let {username,password,repeatPwd,nameErr,pwdErr,repPwdErr} = this.state;
